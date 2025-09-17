@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Archiver</string>
+    <string name="settings">Einstellungen</string>
+    <string name="help">Hilfe</string>
+    <string name="file_display">Datei anzeigen</string>
+
+    <!-- Main Activity -->
+    <string name="no_files">Noch keine Dateien archiviert</string>
+    <string name="file_count">%d Dateien</string>
+
+    <!-- Context Menu -->
+    <string name="delete">Löschen</string>
+    <string name="rename">Umbenennen</string>
+    <string name="display">Anzeigen</string>
+    <string name="delete_confirmation">Sind Sie sicher, dass Sie diese Datei löschen möchten?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="rename_file">Datei umbenennen</string>
+    <string name="new_filename">Neuer Dateiname</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="ok">OK</string>
+
+    <!-- Settings -->
+    <string name="sort_order">Sortierung</string>
+    <string name="sort_by_date">Nach Datum sortieren</string>
+    <string name="sort_by_filename">Nach Dateiname sortieren</string>
+    <string name="font_size">Schriftgröße</string>
+    <string name="font_size_small">Klein</string>
+    <string name="font_size_normal">Normal</string>
+    <string name="font_size_large">Groß</string>
+
+    <!-- File Types -->
+    <string name="file_type_image">Bild</string>
+    <string name="file_type_text">Text</string>
+    <string name="file_type_other">Andere</string>
+
+    <!-- File Size -->
+    <string name="bytes">%d Bytes</string>
+    <string name="kb">%.1f KB</string>
+    <string name="mb">%.1f MB</string>
+    <string name="gb">%.1f GB</string>
+
+    <!-- Error Messages -->
+    <string name="error_file_not_found">Datei nicht gefunden</string>
+    <string name="error_cannot_open_file">Datei kann nicht geöffnet werden</string>
+    <string name="error_saving_file">Fehler beim Speichern der Datei</string>
+    <string name="error_deleting_file">Fehler beim Löschen der Datei</string>
+    <string name="error_renaming_file">Fehler beim Umbenennen der Datei</string>
+
+    <!-- Success Messages -->
+    <string name="file_saved">Datei erfolgreich gespeichert</string>
+    <string name="file_deleted">Datei gelöscht</string>
+    <string name="file_renamed">Datei umbenannt</string>
+</resources>

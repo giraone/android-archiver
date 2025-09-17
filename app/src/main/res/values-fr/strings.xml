@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Archiver</string>
+    <string name="settings">Paramètres</string>
+    <string name="help">Aide</string>
+    <string name="file_display">Affichage du fichier</string>
+
+    <!-- Main Activity -->
+    <string name="no_files">Aucun fichier archivé pour le moment</string>
+    <string name="file_count">%d fichiers</string>
+
+    <!-- Context Menu -->
+    <string name="delete">Supprimer</string>
+    <string name="rename">Renommer</string>
+    <string name="display">Afficher</string>
+    <string name="delete_confirmation">Êtes-vous sûr de vouloir supprimer ce fichier ?</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="rename_file">Renommer le fichier</string>
+    <string name="new_filename">Nouveau nom de fichier</string>
+    <string name="cancel">Annuler</string>
+    <string name="ok">OK</string>
+
+    <!-- Settings -->
+    <string name="sort_order">Ordre de tri</string>
+    <string name="sort_by_date">Trier par date</string>
+    <string name="sort_by_filename">Trier par nom de fichier</string>
+    <string name="font_size">Taille de police</string>
+    <string name="font_size_small">Petit</string>
+    <string name="font_size_normal">Normal</string>
+    <string name="font_size_large">Grand</string>
+
+    <!-- File Types -->
+    <string name="file_type_image">Image</string>
+    <string name="file_type_text">Texte</string>
+    <string name="file_type_other">Autre</string>
+
+    <!-- File Size -->
+    <string name="bytes">%d octets</string>
+    <string name="kb">%.1f Ko</string>
+    <string name="mb">%.1f Mo</string>
+    <string name="gb">%.1f Go</string>
+
+    <!-- Error Messages -->
+    <string name="error_file_not_found">Fichier non trouvé</string>
+    <string name="error_cannot_open_file">Impossible d\'ouvrir le fichier</string>
+    <string name="error_saving_file">Erreur lors de la sauvegarde du fichier</string>
+    <string name="error_deleting_file">Erreur lors de la suppression du fichier</string>
+    <string name="error_renaming_file">Erreur lors du renommage du fichier</string>
+
+    <!-- Success Messages -->
+    <string name="file_saved">Fichier sauvegardé avec succès</string>
+    <string name="file_deleted">Fichier supprimé</string>
+    <string name="file_renamed">Fichier renommé</string>
+</resources>
