@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Help
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -49,9 +49,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        intent?.let { handleIntent(it) }
+        handleIntent(intent)
     }
 
     private fun handleIntent(intent: Intent) {
@@ -90,7 +90,7 @@ fun MainScreen(viewModel: MainViewModel) {
                             context.startActivity(Intent(context, HelpActivity::class.java))
                         }
                     ) {
-                        Icon(Icons.Default.Help, contentDescription = stringResource(R.string.help))
+                        Icon(Icons.Default.Info, contentDescription = stringResource(R.string.help))
                     }
                 }
             )

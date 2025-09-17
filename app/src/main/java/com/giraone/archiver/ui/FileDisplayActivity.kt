@@ -188,7 +188,7 @@ fun ImageDisplayContent(
         when {
             isLoading -> CircularProgressIndicator()
             error != null -> Text(
-                text = error,
+                text = "error", // TODO was error
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.error
             )

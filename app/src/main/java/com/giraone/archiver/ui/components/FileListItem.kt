@@ -6,10 +6,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.Image
-import androidx.compose.material.icons.filled.Description
-import androidx.compose.material.icons.filled.InsertDriveFile
+import androidx.compose.material.icons.filled.Phone // visibility
+import androidx.compose.material.icons.filled.Favorite // Image
+import androidx.compose.material.icons.filled.Build // Description
+import androidx.compose.material.icons.filled.Email // .InsertDriveFile
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -115,7 +115,7 @@ fun FileListItem(
                             onDisplay()
                         },
                         leadingIcon = {
-                            Icon(Icons.Default.Visibility, contentDescription = null)
+                            Icon(Icons.Default.Phone, contentDescription = null)
                         }
                     )
                 }
@@ -148,8 +148,8 @@ fun FileListItem(
 
 private fun getFileTypeIcon(fileType: FileType): ImageVector {
     return when (fileType) {
-        FileType.IMAGE -> Icons.Default.Image
-        FileType.TEXT -> Icons.Default.Description
-        FileType.OTHER -> Icons.Default.InsertDriveFile
+        FileType.IMAGE -> Icons.Default.Favorite
+        FileType.TEXT -> Icons.Default.Build
+        FileType.OTHER -> Icons.Default.Email
     }
 }
