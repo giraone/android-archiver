@@ -1,4 +1,7 @@
 [versions]
+androidGradlePlugin = "8.13.0"
+kotlin = "2.2.20"
+compose-plugin = "1.9.0"
 androidxCoreKtx = "1.17.0"
 androidxLifecycleRuntimeKtx = "2.9.4"
 androidxActivityCompose = "1.11.0"
@@ -17,7 +20,6 @@ mockitoKotlin = "6.0.0"
 kotlinxCoroutinesTest = "1.10.2"
 androidxTestExtJunit = "1.3.0"
 androidxTestEspressoCore = "3.7.0"
-kotlinCompilerExtension = "1.5.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCoreKtx" }
@@ -47,5 +49,9 @@ androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version
 androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxTestEspressoCore" }
 
 [plugins]
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 [bundles]

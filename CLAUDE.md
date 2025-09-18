@@ -19,7 +19,7 @@ cp local-linux.properties local.properties
 
 ## Architecture Overview
 
-This is an Android file archiving app built with Kotlin and Jetpack Compose using MVVM architecture:
+This is an Android file archiving app built with Kotlin 2.2.20 and Jetpack Compose using MVVM architecture:
 
 ### Core Architecture
 - **MVVM Pattern**: Activities use ViewModels that interact with Repository layer
@@ -39,7 +39,8 @@ This is an Android file archiving app built with Kotlin and Jetpack Compose usin
 - Metadata extracted and cached in memory (FileItem objects)
 
 ### Dependency Management
-- Uses `libs.versions.toml` for version catalogs
+- Uses `libs.versions.toml` for version catalogs with plugin aliases
+- **Plugin Management**: Uses catalog-based plugin management with `alias(libs.plugins.*)`
 - Major dependencies: Compose BOM, Material 3, Navigation, DataStore, Markwon, TouchImageView, TSID-Creator
 - Testing: JUnit, Mockito, Coroutines Test
 
@@ -59,6 +60,8 @@ Run individual test classes:
 
 - Package structure follows feature-based organization under `com.giraone.archiver`
 - Uses modern Android development practices: Compose, DataStore, Flow
+- **Kotlin 2.2.20**: Latest Kotlin version with improved performance and new language features
+- **Compose Compiler Gradle Plugin**: Uses dedicated plugin for Compose compilation (replaces kotlinCompilerExtensionVersion)
 - Internationalization support for English, German, French
 - Material 3 theming with proper dark/light mode support
 - No network dependencies - purely local file storage app
