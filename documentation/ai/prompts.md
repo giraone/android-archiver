@@ -239,3 +239,23 @@ viewed.
 
 ---
 
+> Can you show, which task/todo of the last request had which amount of costs?
+
+● I don't have access to cost information for the individual tasks or tool calls I performed. The system doesn't provide me with pricing or cost data for the operations I execute.
+
+However, I can break down what I did for the markdown implementation request:
+
+Task Breakdown:
+
+1. Research existing markdown handling - Multiple file reads and searches
+2. Add MARKDOWN file type - 1 file edit (FileType.kt)
+3. Update FileUtils - 2 file edits (added detection functions)
+4. Update FileRepository - 3 file edits (use new detection logic)
+5. Add markdown icon - 2 file edits (FileListItem.kt)
+6. Update FileDisplayActivity - 3 file edits (add markdown display)
+7. Update MarkdownDisplay component - 1 file edit
+8. Update HelpActivity - 2 file edits
+9. Add unit tests - 1 file edit (FileUtilsTest.kt)
+10. Build attempts - 2 bash commands
+
+---
