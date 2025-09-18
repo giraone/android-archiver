@@ -93,7 +93,24 @@ class FileUtilsTest {
     fun generateUniqueFileName() {
         val result = FileUtils.generateUniqueFileName("test.txt", "text/plain")
         assertTrue(result.contains("test.txt"))
-        assertTrue(result.length > "test.txt".length) // Should have UUID prefix
+        assertTrue(result.length > "test.txt".length) // Should have TSID prefix
+
+        // TSID format should be shorter than UUID (13 chars vs 36 chars)
+        val tsidPart = result.substring(0, result.indexOf("-"))
+        assertTrue("TSID should be 13 characters", tsidPart.length == 13)
+    }
+
+    @Test
+    fun generateUniqueFileName_tsidUniqueness() {
+        // Generate multiple filenames and verify they're unique
+        val results = mutableSetOf<String>()
+        repeat(100) {
+            val filename = FileUtils.generateUniqueFileName("test.txt", "text/plain")
+            val tsidPart = filename.substring(0, filename.indexOf("-"))
+            results.add(tsidPart)
+        }
+        // All TSIDs should be unique (100 different values)
+        assertEquals(100, results.size)
     }
 
     @Test

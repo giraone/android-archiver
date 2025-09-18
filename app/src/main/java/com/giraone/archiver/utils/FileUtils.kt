@@ -4,9 +4,9 @@ import android.content.Context
 import android.webkit.MimeTypeMap
 import com.giraone.archiver.R
 import com.giraone.archiver.data.FileType
+import com.github.f4b6a3.tsid.TsidCreator
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 object FileUtils {
 
@@ -49,13 +49,22 @@ object FileUtils {
         return if (extension != null) ".$extension" else ""
     }
 
+    /**
+     * Generates a unique filename using TSID (Time-Sorted Unique Identifier).
+     *
+     * TSID benefits over UUID:
+     * - Shorter: 13 characters vs 36 characters
+     * - Time-ordered: newer files sort after older ones lexicographically
+     * - URL-friendly: uses only safe characters
+     * - Collision-resistant: practically unique across time and nodes
+     */
     fun generateUniqueFileName(originalFileName: String, mimeType: String?): String {
-        val uuid = UUID.randomUUID().toString()
+        val tsid = TsidCreator.getTsid().toString()
         val extension = getFileExtensionFromMimeType(mimeType)
         return if (extension.isNotEmpty()) {
-            "$uuid-$originalFileName$extension"
+            "$tsid-$originalFileName$extension"
         } else {
-            "$uuid-$originalFileName"
+            "$tsid-$originalFileName"
         }
     }
 

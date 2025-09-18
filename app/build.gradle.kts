@@ -78,6 +78,9 @@ dependencies {
     // TouchImageView for zoomable images
     implementation(libs.touch.image.view)
 
+    // TSID for short unique identifiers as file prefixes
+    implementation(libs.tsid.creator)
+
     // Testing
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)

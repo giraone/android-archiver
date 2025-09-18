@@ -35,12 +35,12 @@ This is an Android file archiving app built with Kotlin and Jetpack Compose usin
 
 ### File Storage Strategy
 - Files stored in app's private directory: `{filesDir}/archived_files/`
-- UUID-based naming: `{UUID}-{originalFileName}` to prevent conflicts
+- TSID-based naming: `{TSID}-{originalFileName}` to prevent conflicts (shorter than UUID)
 - Metadata extracted and cached in memory (FileItem objects)
 
 ### Dependency Management
 - Uses `libs.versions.toml` for version catalogs
-- Major dependencies: Compose BOM, Material 3, Navigation, DataStore, Markwon, TouchImageView
+- Major dependencies: Compose BOM, Material 3, Navigation, DataStore, Markwon, TouchImageView, TSID-Creator
 - Testing: JUnit, Mockito, Coroutines Test
 
 ## Testing Strategy
@@ -63,6 +63,7 @@ Run individual test classes:
 - Material 3 theming with proper dark/light mode support
 - No network dependencies - purely local file storage app
 - **Zoomable image viewer**: Images use TouchImageView for pinch-to-zoom and pan functionality
+- **TSID-based file naming**: Uses Time-Sorted Unique Identifiers (13 chars) instead of UUIDs (36 chars) for shorter file names
 
 ## Error Handling and Logging Guidelines
 

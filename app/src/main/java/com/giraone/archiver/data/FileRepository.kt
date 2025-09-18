@@ -72,18 +72,18 @@ class FileRepository(
         val parts = fileName.split("-", limit = 2)
 
         if (parts.size < 2) {
-            Log.w(TAG, "Invalid file name format: $fileName (expected UUID-originalName format)")
+            Log.w(TAG, "Invalid file name format: $fileName (expected TSID-originalName format)")
             return null
         }
 
-        val uuid = parts[0]
+        val tsid = parts[0]
         val originalFileName = parts[1]
 
         val contentType = guessContentTypeFromFileName(originalFileName)
         val fileType = FileUtils.getFileTypeFromFileName(originalFileName, contentType)
 
         return FileItem(
-            id = uuid,
+            id = tsid,
             fileName = originalFileName,
             filePath = file.absolutePath,
             contentType = contentType ?: "application/octet-stream",

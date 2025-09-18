@@ -10,6 +10,7 @@ androidxLifecycleViewmodelCompose = "2.9.4"
 androidxDatastorePreferences = "1.1.7"
 markwonCore = "4.6.2"
 touchImageView = "3.7.1"
+tsidCreator = "5.2.6"
 junit = "4.13.2"
 mockitoCore = "5.19.0"
 mockitoKotlin = "6.0.0"
@@ -37,6 +38,7 @@ androidx-datastore-preferences = { group = "androidx.datastore", name = "datasto
 markwon-core = { group = "io.noties.markwon", name = "core", version.ref = "markwonCore" }
 markwon-html = { group = "io.noties.markwon", name = "html", version.ref = "markwonCore" } # Assuming same version for html
 touch-image-view = { group = "com.github.MikeOrtiz", name = "TouchImageView", version.ref = "touchImageView" }
+tsid-creator = { group = "com.github.f4b6a3", name = "tsid-creator", version.ref = "tsidCreator" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockitoCore" }
 mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
