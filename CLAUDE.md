@@ -4,6 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Build and Development Commands
 
+**Setup**: Before running any Gradle commands, copy SDK configuration:
+```bash
+cp local-linux.properties local.properties
+```
+
 - **Build the project**: `./gradlew build`
 - **Clean build**: `./gradlew clean build`
 - **Run unit tests**: `./gradlew test`
@@ -57,3 +62,33 @@ Run individual test classes:
 - Internationalization support for English, German, French
 - Material 3 theming with proper dark/light mode support
 - No network dependencies - purely local file storage app
+
+## Error Handling and Logging Guidelines
+
+### Logging Standards
+- **Always add `android.util.Log` import** when implementing error handling
+- **Use consistent TAG**: Add `companion object { private const val TAG = "ClassName" }`
+- **Never silently catch exceptions** - always log them appropriately
+
+### Log Levels
+- **Log.d()**: Debug information (successful operations, progress updates)
+- **Log.w()**: Warnings (recoverable errors, validation failures, operation failures)
+- **Log.e()**: Errors (exceptions with stack traces, critical failures)
+
+### Implementation Pattern
+```kotlin
+try {
+    Log.d(TAG, "Starting operation: description")
+    // operation code
+    Log.d(TAG, "Successfully completed operation")
+} catch (e: Exception) {
+    Log.e(TAG, "Failed to perform operation: description", e)
+    // handle error appropriately
+}
+```
+
+### Repository Layer
+- Log all CRUD operations (create, read, update, delete)
+- Log file parsing failures with file names
+- Log directory operations and their outcomes
+- Always include relevant context (file names, IDs, etc.)
