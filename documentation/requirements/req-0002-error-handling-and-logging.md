@@ -25,3 +25,7 @@ Log Levels Used:
 - Log.e(): Errors (exceptions with stack traces)
 
 The logging follows Android best practices with consistent TAG usage and appropriate log levels for debugging file operations and troubleshooting issues in production.
+
+---
+
+Additional prompt: *Add the procedure on error handling and logging to @CLAUDE.md 
