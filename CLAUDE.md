@@ -40,7 +40,7 @@ This is an Android file archiving app built with Kotlin and Jetpack Compose usin
 
 ### Dependency Management
 - Uses `libs.versions.toml` for version catalogs
-- Major dependencies: Compose BOM, Material 3, Navigation, DataStore, Markwon
+- Major dependencies: Compose BOM, Material 3, Navigation, DataStore, Markwon, TouchImageView
 - Testing: JUnit, Mockito, Coroutines Test
 
 ## Testing Strategy
@@ -62,6 +62,7 @@ Run individual test classes:
 - Internationalization support for English, German, French
 - Material 3 theming with proper dark/light mode support
 - No network dependencies - purely local file storage app
+- **Zoomable image viewer**: Images use TouchImageView for pinch-to-zoom and pan functionality
 
 ## Error Handling and Logging Guidelines
 

@@ -75,6 +75,9 @@ dependencies {
     implementation(libs.markwon.core)
     implementation(libs.markwon.html)
 
+    // TouchImageView for zoomable images
+    implementation(libs.touch.image.view)
+
     // Testing
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)

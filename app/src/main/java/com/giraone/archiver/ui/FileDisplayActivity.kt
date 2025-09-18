@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.giraone.archiver.R
@@ -30,6 +31,7 @@ import com.giraone.archiver.data.PreferencesManager
 import com.giraone.archiver.ui.components.MarkdownDisplay
 import com.giraone.archiver.ui.theme.ArchiverTheme
 import com.giraone.archiver.viewmodel.MainViewModel
+import com.ortiz.touchview.TouchImageView
 import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -170,51 +172,68 @@ fun ImageDisplayContent(
     filePath: String,
     modifier: Modifier = Modifier
 ) {
-    var imageBitmap by remember { mutableStateOf<android.graphics.Bitmap?>(null) }
     var isLoading by remember { mutableStateOf(true) }
     var error by remember { mutableStateOf<String?>(null) }
 
-    LaunchedEffect(filePath) {
-        try {
-            isLoading = true
-            val bitmap = android.graphics.BitmapFactory.decodeFile(filePath)
-            if (bitmap != null) {
-                imageBitmap = bitmap
-                error = null
-            } else {
-                error = "Failed to load image"
-            }
-        } catch (e: Exception) {
-            error = "Error loading image: ${e.message}"
-            imageBitmap = null
-        } finally {
-            isLoading = false
-        }
-    }
-
     Box(
         modifier = modifier,
-        contentAlignment = Alignment.Center
+        contentAlignment = if (isLoading || error != null) Alignment.Center else Alignment.TopStart
     ) {
         when {
-            isLoading -> CircularProgressIndicator()
+            isLoading -> {
+                CircularProgressIndicator()
+                LaunchedEffect(filePath) {
+                    try {
+                        val file = File(filePath)
+                        if (file.exists()) {
+                            error = null
+                            isLoading = false
+                        } else {
+                            error = "Image file not found"
+                            isLoading = false
+                        }
+                    } catch (e: Exception) {
+                        error = "Error loading image: ${e.message}"
+                        isLoading = false
+                    }
+                }
+            }
             error != null -> Text(
-                text = "error", // TODO was error
+                text = error!!, // Here I had to add !! to the generated code (HS)
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.error
             )
-            imageBitmap != null -> {
-                Image(
-                    bitmap = imageBitmap!!.asImageBitmap(),
-                    contentDescription = null,
+            else -> {
+                AndroidView(
                     modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Fit
+                    factory = { context ->
+                        TouchImageView(context).apply {
+                            // Configure TouchImageView
+                            maxZoom = 10f
+                            minZoom = 1f
+                            // Load image from file path
+                            try {
+                                val bitmap = android.graphics.BitmapFactory.decodeFile(filePath)
+                                if (bitmap != null) {
+                                    setImageBitmap(bitmap)
+                                }
+                            } catch (e: Exception) {
+                                android.util.Log.e("ImageDisplay", "Failed to load image: $filePath", e)
+                            }
+                        }
+                    },
+                    update = { touchImageView ->
+                        try {
+                            val bitmap = android.graphics.BitmapFactory.decodeFile(filePath)
+                            if (bitmap != null) {
+                                touchImageView.setImageBitmap(bitmap)
+                            }
+                        } catch (e: Exception) {
+                            android.util.Log.e("ImageDisplay", "Failed to update image: $filePath", e)
+                        }
+                    }
                 )
             }
-            else -> Text(
-                text = "No image to display",
-                style = MaterialTheme.typography.bodyLarge
-            )
         }
     }
 }
