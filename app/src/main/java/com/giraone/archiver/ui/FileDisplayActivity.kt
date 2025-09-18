@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -26,6 +27,7 @@ import com.giraone.archiver.R
 import com.giraone.archiver.data.FileRepository
 import com.giraone.archiver.data.FileType
 import com.giraone.archiver.data.PreferencesManager
+import com.giraone.archiver.ui.components.MarkdownDisplay
 import com.giraone.archiver.ui.theme.ArchiverTheme
 import com.giraone.archiver.viewmodel.MainViewModel
 import java.io.File
@@ -64,7 +66,6 @@ fun FileDisplayScreen(
     viewModel: MainViewModel,
     onBackPressed: () -> Unit
 ) {
-    val context = LocalContext.current
     var fileContent by remember { mutableStateOf<String?>(null) }
     var isLoading by remember { mutableStateOf(true) }
     var error by remember { mutableStateOf<String?>(null) }
@@ -75,7 +76,7 @@ fun FileDisplayScreen(
     }
 
     LaunchedEffect(fileItem) {
-        if (fileItem != null && fileItem.fileType == FileType.TEXT) {
+        if (fileItem != null && (fileItem.fileType == FileType.TEXT || fileItem.fileType == FileType.MARKDOWN)) {
             try {
                 isLoading = true
                 val file = File(fileItem.filePath)
@@ -98,7 +99,7 @@ fun FileDisplayScreen(
                 title = { Text(fileItem?.fileName ?: stringResource(R.string.file_display)) },
                 navigationIcon = {
                     IconButton(onClick = onBackPressed) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 }
             )
@@ -128,6 +129,16 @@ fun FileDisplayScreen(
                 }
                 FileType.TEXT -> {
                     TextDisplayContent(
+                        content = fileContent,
+                        isLoading = isLoading,
+                        error = error,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues)
+                    )
+                }
+                FileType.MARKDOWN -> {
+                    MarkdownDisplayContent(
                         content = fileContent,
                         isLoading = isLoading,
                         error = error,
@@ -240,6 +251,38 @@ fun TextDisplayContent(
                         lineHeight = 20.sp
                     )
                 }
+            }
+            else -> Text(
+                text = "No content to display",
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
+    }
+}
+
+@Composable
+fun MarkdownDisplayContent(
+    content: String?,
+    isLoading: Boolean,
+    error: String?,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = if (isLoading || error != null) Alignment.Center else Alignment.TopStart
+    ) {
+        when {
+            isLoading -> CircularProgressIndicator()
+            error != null -> Text(
+                text = error,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.error
+            )
+            content != null -> {
+                MarkdownDisplay(
+                    content = content,
+                    modifier = Modifier.fillMaxSize()
+                )
             }
             else -> Text(
                 text = "No content to display",

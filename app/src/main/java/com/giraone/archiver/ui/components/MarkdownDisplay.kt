@@ -15,10 +15,10 @@ import java.util.Locale
 
 @Composable
 fun MarkdownDisplay(
+    content: String,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val markdownContent = remember { loadHelpContent(context) }
     val markwon = remember { Markwon.create(context) }
 
     AndroidView(
@@ -32,8 +32,21 @@ fun MarkdownDisplay(
             }
         },
         update = { textView ->
-            markwon.setMarkdown(textView, markdownContent)
+            markwon.setMarkdown(textView, content)
         }
+    )
+}
+
+@Composable
+fun HelpMarkdownDisplay(
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    val markdownContent = remember { loadHelpContent(context) }
+
+    MarkdownDisplay(
+        content = markdownContent,
+        modifier = modifier
     )
 }
 

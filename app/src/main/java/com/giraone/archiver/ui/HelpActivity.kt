@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.giraone.archiver.R
-import com.giraone.archiver.ui.components.MarkdownDisplay
+import com.giraone.archiver.ui.components.HelpMarkdownDisplay
 import com.giraone.archiver.ui.theme.ArchiverTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,13 +41,13 @@ fun HelpScreen(
                 title = { Text(stringResource(R.string.help)) },
                 navigationIcon = {
                     IconButton(onClick = onBackPressed) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 }
             )
         }
     ) { paddingValues ->
-        MarkdownDisplay(
+        HelpMarkdownDisplay(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)

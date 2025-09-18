@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.PlayArrow // Display Action
 import androidx.compose.material.icons.filled.AccountBox // Image Content Type
 import androidx.compose.material.icons.filled.Menu // Text Content Type
+import androidx.compose.material.icons.filled.Info // Markdown Content Type
 import androidx.compose.material.icons.filled.Warning // Other Content Type
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -107,7 +108,7 @@ fun FileListItem(
                 expanded = showMenu,
                 onDismissRequest = { showMenu = false }
             ) {
-                if (fileItem.fileType == FileType.IMAGE || fileItem.fileType == FileType.TEXT) {
+                if (fileItem.fileType == FileType.IMAGE || fileItem.fileType == FileType.TEXT || fileItem.fileType == FileType.MARKDOWN) {
                     DropdownMenuItem(
                         text = { Text("Display") },
                         onClick = {
@@ -150,6 +151,7 @@ private fun getFileTypeIcon(fileType: FileType): ImageVector {
     return when (fileType) {
         FileType.IMAGE -> Icons.Default.AccountBox
         FileType.TEXT -> Icons.Default.Menu
+        FileType.MARKDOWN -> Icons.Default.Info
         FileType.OTHER -> Icons.Default.Warning
     }
 }

@@ -71,6 +71,11 @@ class FileUtilsTest {
     }
 
     @Test
+    fun getFileTypeFromMimeType_markdown() {
+        assertEquals(FileType.MARKDOWN, FileUtils.getFileTypeFromMimeType("text/markdown"))
+    }
+
+    @Test
     fun getFileTypeFromMimeType_other() {
         assertEquals(FileType.OTHER, FileUtils.getFileTypeFromMimeType("application/zip"))
         assertEquals(FileType.OTHER, FileUtils.getFileTypeFromMimeType("video/mp4"))
@@ -106,5 +111,18 @@ class FileUtilsTest {
         assertTrue(FileUtils.isImageFile("image/png"))
         assertFalse(FileUtils.isImageFile("text/plain"))
         assertFalse(FileUtils.isImageFile(null))
+    }
+
+    @Test
+    fun getFileTypeFromFileName_markdown() {
+        assertEquals(FileType.MARKDOWN, FileUtils.getFileTypeFromFileName("readme.md", "text/plain"))
+        assertEquals(FileType.MARKDOWN, FileUtils.getFileTypeFromFileName("docs.markdown", "text/plain"))
+        assertEquals(FileType.MARKDOWN, FileUtils.getFileTypeFromFileName("README.MD", "text/plain"))
+    }
+
+    @Test
+    fun getFileTypeFromFileName_fallback() {
+        assertEquals(FileType.TEXT, FileUtils.getFileTypeFromFileName("test.txt", "text/plain"))
+        assertEquals(FileType.IMAGE, FileUtils.getFileTypeFromFileName("photo.jpg", "image/jpeg"))
     }
 }

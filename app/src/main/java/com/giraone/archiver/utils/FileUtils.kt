@@ -27,9 +27,19 @@ object FileUtils {
     fun getFileTypeFromMimeType(mimeType: String?): FileType {
         return when {
             mimeType?.startsWith("image/") == true -> FileType.IMAGE
+            mimeType == "text/markdown" -> FileType.MARKDOWN
             mimeType?.startsWith("text/") == true -> FileType.TEXT
             mimeType == "application/pdf" -> FileType.TEXT
             else -> FileType.OTHER
+        }
+    }
+
+    fun getFileTypeFromFileName(fileName: String, mimeType: String?): FileType {
+        // Check file extension for markdown files since MIME type might not be reliable
+        val extension = fileName.substringAfterLast('.', "").lowercase()
+        return when {
+            extension in listOf("md", "markdown") -> FileType.MARKDOWN
+            else -> getFileTypeFromMimeType(mimeType)
         }
     }
 

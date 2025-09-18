@@ -61,7 +61,7 @@ class FileRepository(
         val originalFileName = parts[1]
 
         val contentType = guessContentTypeFromFileName(originalFileName)
-        val fileType = FileUtils.getFileTypeFromMimeType(contentType)
+        val fileType = FileUtils.getFileTypeFromFileName(originalFileName, contentType)
 
         return FileItem(
             id = uuid,
@@ -81,6 +81,7 @@ class FileRepository(
         return when (extension) {
             "txt" -> "text/plain"
             "pdf" -> "application/pdf"
+            "md", "markdown" -> "text/markdown"
             "jpg", "jpeg" -> "image/jpeg"
             "png" -> "image/png"
             "gif" -> "image/gif"
@@ -102,7 +103,7 @@ class FileRepository(
                 contentType = fileData.mimeType ?: "application/octet-stream",
                 sizeInBytes = fileData.size,
                 storageDateTime = LocalDateTime.now(),
-                fileType = FileUtils.getFileTypeFromMimeType(fileData.mimeType)
+                fileType = FileUtils.getFileTypeFromFileName(fileData.fileName, fileData.mimeType)
             )
 
             val currentFiles = _fileItems.value.toMutableList()
