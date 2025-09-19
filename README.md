@@ -1,5 +1,14 @@
 # Archiver
 
+This is/was a PoC to test the capabilities of Claude Code for generation an Android app.
+
+- See [prompts.md](documentation/ai/prompts.md), what I initially used as the input, what *Claude Code* returned
+  and also some typically prompt/result scenarios
+- See [requirements](documentation/requirements), what further steps/prompts I made to let *Claude Code*
+  improve the app by passing more business and technical requirements to *Claude Code*
+
+# Archiver - from the perspective of *Claude Code*
+
 A simple and efficient Android app that allows you to receive and store files shared from other applications on your device.
 
 ## Features
