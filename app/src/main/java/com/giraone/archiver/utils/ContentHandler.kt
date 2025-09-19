@@ -70,14 +70,14 @@ class ContentHandler(private val context: Context) {
         }
 
         val uniqueFileName = FileUtils.generateUniqueFileName(fileData.fileName, fileData.mimeType)
-        val file = File(filesDir, uniqueFileName)
+        val contentFile = File(filesDir, uniqueFileName)
 
-        FileOutputStream(file).use { outputStream ->
+        FileOutputStream(contentFile).use { outputStream ->
             fileData.inputStream.use { inputStream ->
                 inputStream.copyTo(outputStream)
             }
         }
 
-        return file
+        return contentFile
     }
 }

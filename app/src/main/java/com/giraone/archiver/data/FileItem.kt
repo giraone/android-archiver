@@ -9,5 +9,6 @@ data class FileItem(
     val contentType: String,
     val sizeInBytes: Long,
     val storageDateTime: LocalDateTime,
-    val fileType: FileType
+    val fileType: FileType,
+    val metadata: Map<String, String> = emptyMap()
 )

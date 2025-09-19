@@ -3,6 +3,7 @@ package com.giraone.archiver.data
 import android.content.Context
 import android.util.Log
 import com.giraone.archiver.utils.FileUtils
+import com.giraone.archiver.utils.MetadataUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,14 +45,15 @@ class FileRepository(
                     return@withContext
                 }
 
-            val fileItems = filesDir.listFiles()?.mapNotNull { file ->
+            val contentFiles = filesDir.listFiles()?.filter { it.name.endsWith(".content") } ?: emptyList()
+            val fileItems = contentFiles.mapNotNull { contentFile ->
                 try {
-                    parseFileItem(file)
+                    parseFileItem(contentFile)
                 } catch (e: Exception) {
-                    Log.w(TAG, "Failed to parse file item: ${file.name}", e)
+                    Log.w(TAG, "Failed to parse file item: ${contentFile.name}", e)
                     null
                 }
-            } ?: emptyList()
+            }
 
                 Log.d(TAG, "Successfully loaded ${fileItems.size} files")
                 _fileItems.value = fileItems
@@ -62,53 +64,39 @@ class FileRepository(
         }
     }
 
-    private fun parseFileItem(file: File): FileItem? {
-        if (!file.isFile) {
-            Log.w(TAG, "Skipping non-file: ${file.name}")
+    private fun parseFileItem(contentFile: File): FileItem? {
+        if (!contentFile.isFile) {
+            Log.w(TAG, "Skipping non-file: ${contentFile.name}")
             return null
         }
 
-        val fileName = file.name
-        val parts = fileName.split("-", limit = 2)
-
-        if (parts.size < 2) {
-            Log.w(TAG, "Invalid file name format: $fileName (expected TSID-originalName format)")
+        val tsid = MetadataUtils.extractTsidFromContentFile(contentFile)
+        if (tsid == null) {
+            Log.w(TAG, "Invalid content file name format: ${contentFile.name} (expected TSID.content format)")
             return null
         }
 
-        val tsid = parts[0]
-        val originalFileName = parts[1]
+        val metadataFile = File(contentFile.parent, MetadataUtils.getMetadataFileName(tsid))
+        val metadata = MetadataUtils.readMetadataFromFile(metadataFile)
 
-        val contentType = guessContentTypeFromFileName(originalFileName)
-        val fileType = FileUtils.getFileTypeFromFileName(originalFileName, contentType)
+        val fileName = metadata["name"] ?: "unknown"
+        val contentType = metadata["contentType"] ?: "application/octet-stream"
+        val fileType = FileUtils.getFileTypeFromFileName(fileName, contentType)
 
         return FileItem(
             id = tsid,
-            fileName = originalFileName,
-            filePath = file.absolutePath,
-            contentType = contentType ?: "application/octet-stream",
-            sizeInBytes = file.length(),
+            fileName = fileName,
+            filePath = contentFile.absolutePath,
+            contentType = contentType,
+            sizeInBytes = contentFile.length(),
             storageDateTime = LocalDateTime.ofEpochSecond(
-                file.lastModified() / 1000, 0, java.time.ZoneOffset.systemDefault().rules.getOffset(java.time.Instant.ofEpochMilli(file.lastModified()))
+                contentFile.lastModified() / 1000, 0, java.time.ZoneOffset.systemDefault().rules.getOffset(java.time.Instant.ofEpochMilli(contentFile.lastModified()))
             ),
-            fileType = fileType
+            fileType = fileType,
+            metadata = metadata
         )
     }
 
-    private fun guessContentTypeFromFileName(fileName: String): String? {
-        val extension = fileName.substringAfterLast(".", "").lowercase()
-        return when (extension) {
-            "txt" -> "text/plain"
-            "pdf" -> "application/pdf"
-            "md", "markdown" -> "text/markdown"
-            "jpg", "jpeg" -> "image/jpeg"
-            "png" -> "image/png"
-            "gif" -> "image/gif"
-            "bmp" -> "image/bmp"
-            "webp" -> "image/webp"
-            else -> "application/octet-stream"
-        }
-    }
 
     suspend fun addFile(fileData: com.giraone.archiver.utils.ContentHandler.FileData): FileItem {
         return withContext(Dispatchers.IO) {
@@ -117,14 +105,26 @@ class FileRepository(
                 val contentHandler = com.giraone.archiver.utils.ContentHandler(context)
                 val savedFile = contentHandler.saveFileToPrivateDirectory(fileData)
 
+                val tsid = MetadataUtils.extractTsidFromContentFile(savedFile)
+                    ?: throw IllegalStateException("Invalid content file generated: ${savedFile.name}")
+
+                val metadata = MetadataUtils.createDefaultMetadata(
+                    fileData.fileName,
+                    fileData.mimeType ?: "application/octet-stream"
+                )
+
+                val metadataFile = File(savedFile.parent, MetadataUtils.getMetadataFileName(tsid))
+                MetadataUtils.writeMetadataToFile(metadataFile, metadata)
+
                 val fileItem = FileItem(
-                    id = savedFile.name.split("-").first(),
+                    id = tsid,
                     fileName = fileData.fileName,
                     filePath = savedFile.absolutePath,
                     contentType = fileData.mimeType ?: "application/octet-stream",
                     sizeInBytes = fileData.size,
                     storageDateTime = LocalDateTime.now(),
-                    fileType = FileUtils.getFileTypeFromFileName(fileData.fileName, fileData.mimeType)
+                    fileType = FileUtils.getFileTypeFromFileName(fileData.fileName, fileData.mimeType),
+                    metadata = metadata
                 )
 
                 val currentFiles = _fileItems.value.toMutableList()
@@ -144,19 +144,22 @@ class FileRepository(
         return withContext(Dispatchers.IO) {
             try {
                 Log.d(TAG, "Deleting file: ${fileItem.fileName}")
-                val file = File(fileItem.filePath)
-                val deleted = file.delete()
+                val contentFile = File(fileItem.filePath)
+                val metadataFile = File(contentFile.parent, MetadataUtils.getMetadataFileName(fileItem.id))
 
-                if (deleted) {
+                val contentDeleted = contentFile.delete()
+                val metadataDeleted = metadataFile.delete() || !metadataFile.exists()
+
+                if (contentDeleted && metadataDeleted) {
                     val currentFiles = _fileItems.value.toMutableList()
                     currentFiles.removeIf { it.id == fileItem.id }
                     _fileItems.value = currentFiles
                     Log.d(TAG, "Successfully deleted file: ${fileItem.fileName}")
                 } else {
-                    Log.w(TAG, "File delete operation returned false for: ${fileItem.fileName}")
+                    Log.w(TAG, "File delete operation failed for: ${fileItem.fileName} (content: $contentDeleted, metadata: $metadataDeleted)")
                 }
 
-                deleted
+                contentDeleted && metadataDeleted
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to delete file: ${fileItem.fileName}", e)
                 false
@@ -168,30 +171,27 @@ class FileRepository(
         return withContext(Dispatchers.IO) {
             try {
                 Log.d(TAG, "Renaming file: ${fileItem.fileName} to $newFileName")
-                val oldFile = File(fileItem.filePath)
-                val newFile = File(oldFile.parent, "${fileItem.id}-$newFileName")
+                val metadataFile = File(File(fileItem.filePath).parent, MetadataUtils.getMetadataFileName(fileItem.id))
 
-                val renamed = oldFile.renameTo(newFile)
+                val updatedMetadata = fileItem.metadata.toMutableMap()
+                updatedMetadata["name"] = newFileName
 
-                if (renamed) {
-                    val updatedFileItem = fileItem.copy(
-                        fileName = newFileName,
-                        filePath = newFile.absolutePath
-                    )
+                MetadataUtils.writeMetadataToFile(metadataFile, updatedMetadata)
 
-                    val currentFiles = _fileItems.value.toMutableList()
-                    val index = currentFiles.indexOfFirst { it.id == fileItem.id }
-                    if (index != -1) {
-                        currentFiles[index] = updatedFileItem
-                        _fileItems.value = currentFiles
-                    }
+                val updatedFileItem = fileItem.copy(
+                    fileName = newFileName,
+                    metadata = updatedMetadata
+                )
 
-                    Log.d(TAG, "Successfully renamed file: ${fileItem.fileName} to $newFileName")
-                    updatedFileItem
-                } else {
-                    Log.w(TAG, "Failed to rename file: ${fileItem.fileName} to $newFileName - file operation failed")
-                    null
+                val currentFiles = _fileItems.value.toMutableList()
+                val index = currentFiles.indexOfFirst { it.id == fileItem.id }
+                if (index != -1) {
+                    currentFiles[index] = updatedFileItem
+                    _fileItems.value = currentFiles
                 }
+
+                Log.d(TAG, "Successfully renamed file: ${fileItem.fileName} to $newFileName")
+                updatedFileItem
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to rename file: ${fileItem.fileName} to $newFileName", e)
                 null

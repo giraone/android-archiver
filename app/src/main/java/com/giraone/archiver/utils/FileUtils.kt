@@ -39,6 +39,7 @@ object FileUtils {
         val extension = fileName.substringAfterLast('.', "").lowercase()
         return when {
             extension in listOf("md", "markdown") -> FileType.MARKDOWN
+            mimeType == "text/markdown" -> FileType.MARKDOWN
             else -> getFileTypeFromMimeType(mimeType)
         }
     }
@@ -51,6 +52,7 @@ object FileUtils {
 
     /**
      * Generates a unique filename using TSID (Time-Sorted Unique Identifier).
+     * Files are now stored as <tsid>.content with metadata in <tsid>.metadata.
      *
      * TSID benefits over UUID:
      * - Shorter: 13 characters vs 36 characters
@@ -60,12 +62,7 @@ object FileUtils {
      */
     fun generateUniqueFileName(originalFileName: String, mimeType: String?): String {
         val tsid = TsidCreator.getTsid().toString()
-        val extension = getFileExtensionFromMimeType(mimeType)
-        return if (extension.isNotEmpty()) {
-            "$tsid-$originalFileName$extension"
-        } else {
-            "$tsid-$originalFileName"
-        }
+        return "$tsid.content"
     }
 
     fun isTextFile(mimeType: String?): Boolean {
