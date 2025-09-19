@@ -1,6 +1,6 @@
 # Archiver
 
-This is/was a PoC to test the capabilities of Claude Code for generation an Android app.
+This is/was a PoC to test the capabilities of *Claude Code* for generating and maintaining an Android app.
 
 - See [prompts.md](documentation/ai/prompts.md), what I initially used as the input, what *Claude Code* returned
   and also some typically prompt/result scenarios
