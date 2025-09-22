@@ -10,6 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.giraone.archiver.R
 import com.giraone.archiver.ui.components.HelpMarkdownDisplay
 import com.giraone.archiver.ui.theme.ArchiverTheme
@@ -31,9 +32,10 @@ class HelpActivity : ComponentActivity() {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Preview
 @Composable
 fun HelpScreen(
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit = {}
 ) {
     Scaffold(
         topBar = {

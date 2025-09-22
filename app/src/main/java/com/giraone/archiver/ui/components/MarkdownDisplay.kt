@@ -8,14 +8,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import io.noties.markwon.Markwon
 import java.util.Locale
 
+class DogProvider : PreviewParameterProvider<String> {
+    override val values = listOf(
+        """
+          # Title
+          - List item 1
+          - List item 2
+        """.trimIndent()).asSequence()
+}
+
 @Composable
+@Preview
 fun MarkdownDisplay(
-    content: String,
+    @PreviewParameter(DogProvider::class) content: String,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
