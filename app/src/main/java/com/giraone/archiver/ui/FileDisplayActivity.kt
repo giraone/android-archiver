@@ -19,6 +19,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -311,3 +312,72 @@ fun MarkdownDisplayContent(
     }
 }
 
+@Preview
+@Composable
+fun ImageDisplayContentPreview() {
+    ArchiverTheme {
+        ImageDisplayContent(
+            filePath = "android_asset://preview/small.jpg"
+        )
+    }
+}
+
+@Preview
+@Composable
+fun TextDisplayContentPreview() {
+    ArchiverTheme {
+        TextDisplayContent(
+            content = "This is a sample text content for preview.\n\nIt demonstrates how text files are displayed in the app.\n\nMultiple lines are supported.",
+            isLoading = false,
+            error = null
+        )
+    }
+}
+
+@Preview
+@Composable
+fun TextDisplayContentLoadingPreview() {
+    ArchiverTheme {
+        TextDisplayContent(
+            content = null,
+            isLoading = true,
+            error = null
+        )
+    }
+}
+
+@Preview
+@Composable
+fun TextDisplayContentErrorPreview() {
+    ArchiverTheme {
+        TextDisplayContent(
+            content = null,
+            isLoading = false,
+            error = "Failed to load file content"
+        )
+    }
+}
+
+@Preview
+@Composable
+fun MarkdownDisplayContentPreview() {
+    ArchiverTheme {
+        MarkdownDisplayContent(
+            content = "# Preview Title\n\nThis is **sample markdown** content for preview.\n\n- List item 1\n- List item 2\n\n```kotlin\nfun example() {\n    println(\"Hello World!\")\n}\n```",
+            isLoading = false,
+            error = null
+        )
+    }
+}
+
+@Preview
+@Composable
+fun MarkdownDisplayContentLoadingPreview() {
+    ArchiverTheme {
+        MarkdownDisplayContent(
+            content = null,
+            isLoading = true,
+            error = null
+        )
+    }
+}

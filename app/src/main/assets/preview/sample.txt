@@ -1,0 +1,11 @@
+This is a sample text file for testing the Android Archiver application.
+
+It contains multiple lines of text to demonstrate how text files are displayed in the app.
+
+Key features:
+- Text file display
+- File archiving
+- MVVM architecture
+- Jetpack Compose UI
+
+This file will be used in the preview composables to show realistic content.

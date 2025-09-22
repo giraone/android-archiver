@@ -1,0 +1,34 @@
+Icon generieren
+Fingerprint Login
+
+Change the software, so that for each stored file a set of key value pairs can be additionally stored in a JSON file. This data as key value pairs will be called "metadata" from now on. On always present key value pair will be the key "name" and the file name. Another one will be "contentType" and the content type of the file, e.g. "image/jpeg". So from now on the file name in the file system will be only "<tsid>.content" and there is no need for mapping content type.
+
+This means that the file name it
+1) Name nicht mehr Dateiname sondern in Metadaten Datei
+File Type zu Content-Type ersetzen durch contentType in Metadaten Datei
+
+2) Dokumentation erstellen
+- Glossary
+  - item
+  - 
+- Current functional requirements 
+- Current non-functional requirements
+2.1) Changes to consider
+- New functional requirements
+  - 
+- New non-functional requirements
+
+
+
+Listview aufklappbar
+
+
+
+Ziel: Secret Archiver
+2 Dateien: <tsid>.cont.enc plus <tsid>.json.enc
+tsid node überlegen
+SQLite hat nur 
+- tsid
+- name
+- category (später)
+- contentType für Icon

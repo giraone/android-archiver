@@ -20,11 +20,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.giraone.archiver.data.FileItem
 import com.giraone.archiver.data.FileType
 import com.giraone.archiver.data.FontSize
+import com.giraone.archiver.ui.theme.ArchiverTheme
 import com.giraone.archiver.utils.FileUtils
+import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -153,5 +156,68 @@ private fun getFileTypeIcon(fileType: FileType): ImageVector {
         FileType.TEXT -> Icons.Default.Menu
         FileType.MARKDOWN -> Icons.Default.Info
         FileType.OTHER -> Icons.Default.Warning
+    }
+}
+
+@Preview
+@Composable
+fun FileListItemTextPreview() {
+    ArchiverTheme {
+        FileListItem(
+            fileItem = FileItem(
+                id = "preview-text-id",
+                fileName = "sample.txt",
+                filePath = "android_asset://preview/sample.txt",
+                fileType = FileType.TEXT,
+                sizeInBytes = 1024,
+                storageDateTime = LocalDateTime.now()
+            ),
+            fontSize = FontSize.NORMAL,
+            onDelete = { },
+            onRename = { },
+            onDisplay = { }
+        )
+    }
+}
+
+@Preview
+@Composable
+fun FileListItemImagePreview() {
+    ArchiverTheme {
+        FileListItem(
+            fileItem = FileItem(
+                id = "preview-image-id",
+                fileName = "small.jpg",
+                filePath = "android_asset://preview/small.jpg",
+                fileType = FileType.IMAGE,
+                sizeInBytes = 183520,
+                storageDateTime = LocalDateTime.now().minusDays(1)
+            ),
+            fontSize = FontSize.LARGE,
+            onDelete = { },
+            onRename = { },
+            onDisplay = { }
+        )
+    }
+}
+
+@Preview
+@Composable
+fun FileListItemMarkdownPreview() {
+    ArchiverTheme {
+        FileListItem(
+            fileItem = FileItem(
+                id = "preview-markdown-id",
+                fileName = "sample.md",
+                filePath = "android_asset://preview/sample.md",
+                fileType = FileType.MARKDOWN,
+                sizeInBytes = 2048,
+                storageDateTime = LocalDateTime.now().minusDays(2)
+            ),
+            fontSize = FontSize.SMALL,
+            onDelete = { },
+            onRename = { },
+            onDisplay = { }
+        )
     }
 }

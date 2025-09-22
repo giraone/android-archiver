@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -195,6 +196,201 @@ fun PreferenceScreen(
                             .selectable(
                                 selected = fontSize == FontSize.LARGE,
                                 onClick = { viewModel.setFontSize(FontSize.LARGE) },
+                                role = Role.RadioButton
+                            )
+                            .padding(vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = fontSize == FontSize.LARGE,
+                            onClick = null
+                        )
+                        Text(
+                            text = stringResource(R.string.font_size_large),
+                            modifier = Modifier.padding(start = 8.dp)
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun PreferenceScreenPreview() {
+    ArchiverTheme {
+        PreferenceScreenContent(
+            sortOrder = SortOrder.DATE,
+            fontSize = FontSize.NORMAL,
+            onSortOrderChanged = { },
+            onFontSizeChanged = { },
+            onBackPressed = { }
+        )
+    }
+}
+
+@Preview
+@Composable
+fun PreferenceScreenLargeFontPreview() {
+    ArchiverTheme {
+        PreferenceScreenContent(
+            sortOrder = SortOrder.FILENAME,
+            fontSize = FontSize.LARGE,
+            onSortOrderChanged = { },
+            onFontSizeChanged = { },
+            onBackPressed = { }
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PreferenceScreenContent(
+    sortOrder: SortOrder,
+    fontSize: FontSize,
+    onSortOrderChanged: (SortOrder) -> Unit,
+    onFontSizeChanged: (FontSize) -> Unit,
+    onBackPressed: () -> Unit
+) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.settings)) },
+                navigationIcon = {
+                    IconButton(onClick = onBackPressed) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(16.dp)
+        ) {
+            // Sort Order Section
+            Text(
+                text = stringResource(R.string.sort_order),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .selectable(
+                                selected = sortOrder == SortOrder.DATE,
+                                onClick = { onSortOrderChanged(SortOrder.DATE) },
+                                role = Role.RadioButton
+                            )
+                            .padding(vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = sortOrder == SortOrder.DATE,
+                            onClick = null
+                        )
+                        Text(
+                            text = stringResource(R.string.sort_by_date),
+                            modifier = Modifier.padding(start = 8.dp)
+                        )
+                    }
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .selectable(
+                                selected = sortOrder == SortOrder.FILENAME,
+                                onClick = { onSortOrderChanged(SortOrder.FILENAME) },
+                                role = Role.RadioButton
+                            )
+                            .padding(vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = sortOrder == SortOrder.FILENAME,
+                            onClick = null
+                        )
+                        Text(
+                            text = stringResource(R.string.sort_by_filename),
+                            modifier = Modifier.padding(start = 8.dp)
+                        )
+                    }
+                }
+            }
+
+            // Font Size Section
+            Text(
+                text = stringResource(R.string.font_size),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            Card(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .selectable(
+                                selected = fontSize == FontSize.SMALL,
+                                onClick = { onFontSizeChanged(FontSize.SMALL) },
+                                role = Role.RadioButton
+                            )
+                            .padding(vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = fontSize == FontSize.SMALL,
+                            onClick = null
+                        )
+                        Text(
+                            text = stringResource(R.string.font_size_small),
+                            modifier = Modifier.padding(start = 8.dp)
+                        )
+                    }
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .selectable(
+                                selected = fontSize == FontSize.NORMAL,
+                                onClick = { onFontSizeChanged(FontSize.NORMAL) },
+                                role = Role.RadioButton
+                            )
+                            .padding(vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = fontSize == FontSize.NORMAL,
+                            onClick = null
+                        )
+                        Text(
+                            text = stringResource(R.string.font_size_normal),
+                            modifier = Modifier.padding(start = 8.dp)
+                        )
+                    }
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .selectable(
+                                selected = fontSize == FontSize.LARGE,
+                                onClick = { onFontSizeChanged(FontSize.LARGE) },
                                 role = Role.RadioButton
                             )
                             .padding(vertical = 8.dp),

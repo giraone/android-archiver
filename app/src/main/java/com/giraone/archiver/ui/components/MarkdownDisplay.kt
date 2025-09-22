@@ -82,3 +82,9 @@ private fun loadHelpContent(context: Context): String {
         }
     }
 }
+
+@Preview
+@Composable
+fun HelpMarkdownDisplayPreview() {
+    HelpMarkdownDisplay()
+}

@@ -218,3 +218,13 @@ Task Breakdown:
 10. Build attempts - 2 bash commands
 
 ---
+
+Create composable previews using `@Preview` annotation for every composable, so that they can be previewed in Android Studio. If necessary use Kotlin default arguments or `@PreviewParameter` annotation.
+
+Then Claude wanted to change, but with e.g. `filePath = "/path/to/vacation-photo.jpg"`.
+
+Make the change, but use the test files from ./testfiles and copy them to the project as resources. 
+
+The result was then `filePath = "android_asset://preview/small.jpg"` and the file were copied.
+
+---
